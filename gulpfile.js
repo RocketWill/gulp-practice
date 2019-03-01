@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var sass = require('gulp-sass')
 var uglifycss = require('gulp-uglifycss');
+var browser_sync = require('browser-sync').create();
 
 gulp.task('sass', function () {
     return gulp.src('./sass/*.sass')
@@ -28,9 +29,24 @@ gulp.task('run', done=>{
 });
 
 
-gulp.task('watch', function(){
+gulp.task('serve', gulp.series('run', function(){
+    browser_sync.init({
+        server: './'
+    });
     gulp.watch('./sass/*.sass', gulp.series('sass'));
     gulp.watch('./css/*.css', gulp.series('css'));
-});
+    gulp.watch('./*.html').on('change', browser_sync.reload);
+}));
 
-gulp.task('default', gulp.parallel('run','watch'));
+   
+
+
+
+
+
+//gulp.task('watch', function(){
+//    gulp.watch('./sass/*.sass', gulp.series('sass'));
+//    gulp.watch('./css/*.css', gulp.series('css'));
+//});
+
+gulp.task('default', gulp.series('serve'));
