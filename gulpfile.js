@@ -20,3 +20,17 @@ gulp.task('css', function () {
 });
 
 
+
+
+gulp.task('run', done=>{
+    gulp.series('sass', 'css');
+    done();
+});
+
+
+gulp.task('watch', function(){
+    gulp.watch('./sass/*.sass', gulp.series('sass'));
+    gulp.watch('./css/*.css', gulp.series('css'));
+});
+
+gulp.task('default', gulp.parallel('run','watch'));
